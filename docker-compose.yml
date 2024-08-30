@@ -1,0 +1,26 @@
+version: '3.8'
+
+networks:
+  vue:
+
+services:
+  rick-and-morty:
+    build:
+      context: ./rick-and-morty
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    volumes:
+      - './rick-and-morty:/app'
+    networks:
+      - vue
+
+  npm:
+    image: node:current-alpine 
+    volumes:
+      - ./rick-and-morty:/app
+    working_dir: /app
+    entrypoint: [ 'npm' ]
+    command: [ 'install' ]
+    depends_on:
+      - rick-and-morty
